@@ -1,14 +1,21 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+#
+# Create Vagrant VM on vSphere
+# using: vagrant-vsphere
+#
+# vagrant plugin install vagrant-vsphere
 
 vSphereUserName  = 'signiantott\mboudreau'
 vSpherePassword  = :ask
 
-shortMachineName = 'marctestvagrant'
+shortMachineName = 'marctestinternal'
 machineName      = shortMachineName + '.ott.signiant.com'
-vmName           = 'Marc Test VM'
+vmName           = 'Marc Test VM - internal'
 signiantOrgName  = 'Marc' # Signiant CA Org
 userFolder       = 'Marc'
+
+isInternalOnly   = true
 
 managerVersion   = '10.5'
 
@@ -39,7 +46,11 @@ Vagrant.configure(2) do |config|
 
     vsphere.cpu_count = cpus
     vsphere.memory_mb = memoryInGb * 1024
-    #vsphere.linked_clone = 'true'   #TODO:mpb figure out why this isn't supported on this VM
+
+    # Linked Clones not supported currently see:
+    # http://www.vmware.com/files/pdf/techpaper/vsphere-storage-drs-interoperability.pdf
+    # Essentially, for vSphere, the base image's disks have to be read only (delta-disks)
+    #vsphere.linked_clone = 'true'
 
     # The ESX host for the new VM
     vsphere.compute_resource_name = 'VMware Cluster'
@@ -56,6 +67,10 @@ Vagrant.configure(2) do |config|
 
     # The name of the new machine
     vsphere.name = vmName
+
+    if isInternalOnly
+      vsphere.vlan = 'Internal Only'
+    end
 
     # SSL isn't configured correctly, set this to 'true'
     vsphere.insecure = true
