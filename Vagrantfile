@@ -5,6 +5,7 @@
 # using: vagrant-vsphere
 #
 # vagrant plugin install vagrant-vsphere
+# https://github.com/nsidc/vagrant-vsphere
 
 vSphereUserName  = 'signiantott\mboudreau'
 vSpherePassword  = :ask
