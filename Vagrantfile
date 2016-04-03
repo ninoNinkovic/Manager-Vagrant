@@ -63,12 +63,12 @@ Vagrant.configure(2) do |config|
     vsphere.vm_base_path = '/Virtual Machines/Development/' + userFolder
 
     # The template we're going to clone
-    #vsphere.template_name = '/Templates/Linux/Centos 6.5 64bit'
     vsphere.template_name = '/Virtual Machines/Development/Marc/Vagrant Template - Centos 6.5 64bit'
 
     # The name of the new machine
     vsphere.name = vmName
 
+    # Default value is 'VM Network'
     if isInternalOnly
       vsphere.vlan = 'Internal Only'
     end
